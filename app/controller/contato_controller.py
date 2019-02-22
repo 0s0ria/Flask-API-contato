@@ -1,26 +1,46 @@
-from app import app
-from flask import request, abort
 import json
+from flask import Response
 from app.model.contato import Contato
 from app.dao.contato_dao import Contato_Dao
+from app.commons.message import MESSAGE
+from app.commons.status import STATUS
 
 
-@app.route("/contato", methods=['GET'])
-def get_contatos():
+class Contato_Controller():
 
-    return 'não autorizado',401
+    def get_all():
+        return (MESSAGE['OK'],STATUS['OK'])
 
+    def get_one():
+        pass
 
-@app.route('/contato', methods=['POST'])
-def create_contato():
-    data = request.get_json()
+    def create(data):
+        try:
+            print(data)
+            contato = Contato()
+            contato.name = data['name']
+            contato.tell = data['tell']
+            contato.email = data['email']
+            contato_dao = Contato_Dao()
+            contato_dao.create(contato)
+            content = {
+                'code': 10,
+                'user_message':'contato criado com sucesso',
+                'internal_message':'novo contato inserido na base'
+            }
+            return Response(response=json.dumps(content), status=STATUS['OK'], mimetype='application/json')
 
-    pass
+        except:
+            content = {
+                'code': 15,
+                'user_message':'falha ao criar contato',
+                'internal_message':' erro ao inserir na base'
 
-@app.route('/contato/<id>', methods=['PUT'])
-def update_contato(id):
-    return id
+            }
+            return Response(response=json.dumps(content), status=STATUS['NOT_FOUND'], mimetype='application/json')
 
-@app.route('/contato', methods=['DELETE'])
-def delete_contato():
-    pass
+    def update():
+        pass
+
+    def delete():
+        pas

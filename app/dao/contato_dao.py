@@ -2,44 +2,46 @@ import sqlite3
 
 
 class Contato_Dao():
-    def __init__(self, contato):
-        self.__id = contato.id
-        self.__name = contato.name
-        self.__tell = contato.tell
-        self.__email = contato.email
+    def connect(self):
         self.__db = sqlite3.connect('/home/leonardo/WORKSPACE/Flask-API-contato/app/dao/contato.db')
         self.__cursor = self.__db.cursor()
 
-    def create(self):
-        self.__query = """ INSERT INTO contato (name, tell, email)
+    def create(self,contato):
+        Contato_Dao.connect(self)
+        __query = """ INSERT INTO contato (name, tell, email)
                             VALUES(?,?,?);"""
-        self.__cursor.execute(self.__query, (self.__name, self.__tell, self.__email))
+        self.__cursor.execute(__query, (contato.name, contato.tell, contato.email))
         self.__db.commit()
 
-    def read_all(self):
-        self.__query = """ SELECT * FROM contato """
-        self.__cursor.execute(self.__query)
+    def read_all():
+        Contato_Dao.connect()
+        __query = """ SELECT * FROM contato """
+        self.__cursor.execute(__query)
         return self.__cursor.fetchall()
 
-    def read_one(self):
-        self.__query = """ SELECT * FROM contato WHERE id = ?; """
-        self.__cursor.execute(self.__query, (self.__id))
+    def read_one(id):
+        Contato_Dao.connect()
+        __query = """ SELECT * FROM contato WHERE id = ?; """
+        self.__cursor.execute(__query, (id))
         return self.__cursor.fetchall()
 
-    def search(self):
-        self.__query = """ SELECT * FROM contato WHERE name LIKE '%{}%' ORDER BY name;"""
-        self.__cursor.execute(self.__query.format(self.__name))
+    def search(name):
+        Contato_Dao.connect()
+        __query = """ SELECT * FROM contato WHERE name LIKE '%{}%' ORDER BY name;"""
+        self.__cursor.execute(__query.format(name))
         return self.__cursor.fetchall()
 
-    def update(self):
-        self.__query = """ UPDATE contato
+    def update(contato):
+        Contato_Dao.connect()
+        __query = """ UPDATE contato
         SET name = ?,
             tell = ?,
             email = ? WHERE id = ?"""
-        self.__cursor.execute(self.__query,(self.__name,self.__tell,self.__email,self.__id))
+        self.__cursor.execute(__query,(contato.name,contato.tell,contato.email,contato.id))
         self.__db.commit()
 
-    def delete(self):
-        self.__query = """ DELETE FROM contato WHERE id = ? """
-        self.__cursor.execute(self.__query,(self.__id))
+    def delete(id):
+        Contato_Dao.connect()
+        __query = """ DELETE FROM contato WHERE id = ? """
+        self.__cursor.execute(__query,(id))
         self.__db.commit()
