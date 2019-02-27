@@ -11,7 +11,7 @@ class Contato():
 
     @id.setter
     def id (self, var):
-        self.__id = str(var)
+        self.__id = var
 
     @property
     def name(self):
@@ -37,3 +37,30 @@ class Contato():
     @email.setter
     def email(self, var):
         self.__email = str(var)
+
+    def parce(self, data):
+        if ('name' in data):
+            self.__name = data['name']
+        if ('tell' in data):
+            self.__tell = data['tell']
+        if ('email' in data):
+            self.__email = data['email']
+        if ('id' in data):
+            self.__id = data['id']
+
+    def converter (self,data):
+        response = []
+
+        for contato in data:
+            default_schema = {
+                'id': contato[0],
+                'name': contato[1],
+                'tell': contato[2],
+                'email': contato[3]
+            }
+            response.append(default_schema)
+        
+        return response
+
+
+

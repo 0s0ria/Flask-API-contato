@@ -12,8 +12,9 @@ def get_contatos():
     return response
 
 @app.route("/contato/<id>", methods=['GET'])
-def get_contato():
-    response = ( MESSAGE['not_authorized'],STATUS['not_authorized'])
+def get_contato(id):
+    print(id)
+    response = Contato_Controller.get_one(id)
     return response
 
 
@@ -28,6 +29,8 @@ def create_contato():
 def update_contato(id):
     return id
 
-@app.route('/contato', methods=['DELETE'])
-def delete_contato():
-    pass
+@app.route('/contato/<id>', methods=['DELETE'])
+def delete_contato(id):
+    print(type(id))
+    response = Contato_Controller.delete(id)
+    return response

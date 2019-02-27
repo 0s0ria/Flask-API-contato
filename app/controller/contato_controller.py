@@ -9,38 +9,80 @@ from app.commons.status import STATUS
 class Contato_Controller():
 
     def get_all():
-        return (MESSAGE['OK'],STATUS['OK'])
-
-    def get_one():
-        pass
-
-    def create(data):
         try:
-            print(data)
             contato = Contato()
-            contato.name = data['name']
-            contato.tell = data['tell']
-            contato.email = data['email']
             contato_dao = Contato_Dao()
-            contato_dao.create(contato)
+            data =  contato_dao.read_all()
             content = {
-                'code': 10,
-                'user_message':'contato criado com sucesso',
-                'internal_message':'novo contato inserido na base'
+                'message': MESSAGE['GET']['SUCCESS'],
+                'data': contato.converter(data)
+            }
+            return Response(response=json.dumps(content), status=STATUS['OK'], mimetype='application/json')
+        except Exception as error:
+            print(error)
+            content = {
+                'message': MESSAGE['GET']['ERROR']
+            }
+            return Response(response=json.dumps(content), status=STATUS['ERROR'], mimetype='application/json')
+
+    def get_one(id):
+        try:
+            contato = Contato()
+            contato.id = id
+            contato_dao = Contato_Dao()
+            data = contato_dao.read_one(contato)
+            content = {
+                'message': MESSAGE['GET']['SUCCESS'],
+                'data': contato.converter(data)
             }
             return Response(response=json.dumps(content), status=STATUS['OK'], mimetype='application/json')
 
-        except:
+        except Exception as error:
+            print(error)
             content = {
-                'code': 15,
-                'user_message':'falha ao criar contato',
-                'internal_message':' erro ao inserir na base'
-
+                'message': MESSAGE['GET']['ERROR']
             }
-            return Response(response=json.dumps(content), status=STATUS['NOT_FOUND'], mimetype='application/json')
+            return Response(response=json.dumps(content), status=STATUS['ERROR'], mimetype='application/json')
+        
 
-    def update():
+    def create(data):
+        try:
+            contato = Contato()
+            contato.parce(data)
+            contato_dao = Contato_Dao()
+            contato_dao.create(contato)
+            content = {
+                'message': MESSAGE['CREATE']['SUCCESS']
+            }
+            return Response(response=json.dumps(content), status=STATUS['OK'], mimetype='application/json')
+
+        except Exception as error:
+            print(error)
+            content = {
+                'message': MESSAGE['CREATE']['ERROR']
+            }
+            return Response(response=json.dumps(content), status=STATUS['ERROR'], mimetype='application/json')
+
+    def update(data):
+        
         pass
 
-    def delete():
-        pas
+    def delete(id):
+        try:
+            contato = Contato()
+            contato.id = id
+            contato_dao = Contato_Dao()
+            print(contato.id)
+            contato_dao.delete(contato)
+            content = {
+                'message' : MESSAGE['DELETE']['SUCCESS']
+            }
+            return Response(response=json.dumps(content), status=STATUS['OK'], mimetype='application/json')
+
+        except Exception as error:
+            print(error)
+            content = {
+                'message': MESSAGE['DELETE']['ERROR']
+            }
+            return Response(response=json.dumps(content), status=STATUS['ERROR'], mimetype='application/json')
+        
