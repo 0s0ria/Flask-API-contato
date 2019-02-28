@@ -54,7 +54,7 @@ class Contato_Controller():
             content = {
                 'message': MESSAGE['CREATE']['SUCCESS']
             }
-            return Response(response=json.dumps(content), status=STATUS['OK'], mimetype='application/json')
+            return Response(response=json.dumps(content), status=STATUS['CREATE'], mimetype='application/json')
 
         except Exception as error:
             print(error)
@@ -63,9 +63,29 @@ class Contato_Controller():
             }
             return Response(response=json.dumps(content), status=STATUS['ERROR'], mimetype='application/json')
 
-    def update(data):
-        
-        pass
+    def update(id,data):
+        try:
+            contato = Contato()
+            contato.id = id
+            contato.parce(data)
+            contato_dao = Contato_Dao()
+            contato_dao.update(contato)
+            print('aqui')
+            data = contato_dao.read_one(contato)
+            print(data)
+            content = {
+               'message': MESSAGE['UPDATE']['SUCCESS'],
+               'data': contato.converter(data)
+            }
+            return Response(response=json.dumps(content), status=STATUS['OK'], mimetype='application/json')
+
+        except Exception as error:
+            print(error)
+            content = {
+              'message': MESSAGE['UPDATE']['ERROR']
+            }
+            return Response(response=json.dumps(content), status=STATUS['ERROR'], mimetype='application/json')
+
 
     def delete(id):
         try:

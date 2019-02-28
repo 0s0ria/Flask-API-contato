@@ -11,7 +11,7 @@ class Contato():
 
     @id.setter
     def id (self, var):
-        self.__id = var
+        self.__id = str(var)
 
     @property
     def name(self):

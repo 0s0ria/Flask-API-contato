@@ -34,11 +34,21 @@ class Contato_Dao():
     def update(self,contato):
         Contato_Dao.connect(self)
 
-        __query = """ UPDATE contato
-        SET name = ?,
-            tell = ?,
-            email = ? WHERE id = ?"""
-        self.__cursor.execute(__query)
+        name = "name = '{}'".format(contato.name) if contato.name != None else ''
+        tell = " tell = '{}'".format(contato.tell) if contato.tell != None else ''
+        email = " email = '{}'".format(contato.email) if contato.email != None else ''
+
+        if name and tell and email != '':
+            name = name + ','
+            tell = tell + ','
+        elif (name and tell != '') or (name and email != ''):
+            name = name + ','
+        elif tell and email != '':
+            tell = tell + ','
+
+        __query = """ UPDATE contato SET {}{}{} WHERE id = {}""".format(name,tell,email,contato.id)
+        print(__query)
+        self.__cursor.execute( __query)
         self.__db.commit()
 
     def delete(self,contato):

@@ -7,13 +7,11 @@ from app.controller.contato_controller import Contato_Controller
 
 @app.route("/contato", methods=['GET'])
 def get_contatos():
-    print('test')
     response = Contato_Controller.get_all()
     return response
 
 @app.route("/contato/<id>", methods=['GET'])
 def get_contato(id):
-    print(id)
     response = Contato_Controller.get_one(id)
     return response
 
@@ -27,10 +25,11 @@ def create_contato():
 
 @app.route('/contato/<id>', methods=['PUT'])
 def update_contato(id):
-    return id
+    data = request.get_json()
+    response = Contato_Controller.update(id,data)
+    return  response
 
 @app.route('/contato/<id>', methods=['DELETE'])
 def delete_contato(id):
-    print(type(id))
     response = Contato_Controller.delete(id)
     return response
