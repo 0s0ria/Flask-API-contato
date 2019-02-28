@@ -1,9 +1,9 @@
 # API basica para contatos em flask 
 
 ## Requisitos 
-   [python3](https://www.python.org/downloads/) 
-   [flask](http://flask.pocoo.org/) 
-   [sqlite3](https://www.sqlite.org/index.html) 
+   [python3](https://www.python.org/downloads/)   
+   [flask](http://flask.pocoo.org/)   
+   [sqlite3](https://www.sqlite.org/index.html)   
 
 ## instalação
      Para instalar python3 basta acessar o link para dowload em requisitos. Se você estiver usando
